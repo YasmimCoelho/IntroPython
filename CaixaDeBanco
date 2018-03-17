@@ -1,0 +1,137 @@
+contas=[]
+saldos=[]
+tiposConta=[]
+
+def adicionaInfo (conta,tipoConta,saldo):
+    contas.append(conta)
+    tiposConta.append(tipoConta)
+    saldos.append(saldo)
+
+def atualizaContas(tiposConta):
+    for i in range(len(tiposConta)):
+        if tiposConta[i] == "p":
+            saldos[i]+= saldos[i] * 0.005
+        if tiposConta[i] == "i":
+            saldos[i]+= saldos[i] * 0.01
+
+def indiceConta(contaAux):
+    return contas.index(contaAux)
+
+def totalPoupanca (tiposConta):
+    totalP=0.0
+    for i in range(len(tiposConta)):
+        if tiposConta[i] == "p":
+            totalP+=saldos[i]
+    return totalP
+
+def totalCorrente(tiposConta):
+    totalC=0.0
+    for i in range(len(tiposConta)):
+        if tiposConta[i] == "c":
+            totalC+=saldos[i]
+    return totalC
+
+def totalInvestimento(tiposConta):
+    totalI=0.0
+    for i in range(len(tiposConta)):
+        if tiposConta[i] == "i":
+            totalI+=saldos[i]
+    return totalI
+
+print("\n********************************************************************************")
+print("""
+       \n                       Bem Vindo ao Sistema de Banco F-CAZ!
+                          O melhor sistema para seu banco!\n
+       """)
+print("********************************************************************************\n")
+
+menuInicio = True
+while menuInicio:
+    print("""
+                             MENU PRINCIPAL\n
+                             1-Cadastro de Contas\n
+                             2-Depósito em conta\n
+                             3-Saque\n
+                             4-Consultar de saldo\n
+                             5-Atualização de contas\n
+                             6-Consulta de ativo bancário\n
+                             0-Sair do sistema\n
+    	 """)
+    menuInicio=input("Insira a ação que deseja realizar:")
+
+    if menuInicio == "1":
+        print("\nCADASTRO DE CONTA\n")
+        print("Cadastre sua conta agora mesmo! Rápido e fácil!\n")
+        while menuInicio == "1":
+            novaConta=input("Deseja cadastrar nova conta? 'sim' ou 'nao':").lower()
+            if novaConta == "sim":
+                    conta=int(input("Insira o numero da conta:"))
+                    if conta in contas:
+                        print("\nCONTA JÁ EXISTENTE!\n")
+                        break
+                    else:
+                        saldo=float(input("Saldo da conta:"))
+                        tipoConta=input("Tipo de conta: Digite 'p'- Conta Poupança | 'c'-Conta Corrente | 'i'-Conta investimento:").lower()
+                        adicionaInfo (conta,tipoConta,saldo)
+            else:
+                break    
+
+    elif menuInicio == "2":
+        print("\nDEPÓSITO EM CONTA\n")
+        contaAux=int(input("Conta para depósito:"))
+        if contaAux in contas:
+            maisSaldo=float(input("Digite o valor a ser depositado na conta %s: "%contaAux))
+            i=indiceConta(contaAux)
+            saldos[i]+=maisSaldo
+            print("Depósito efetuado com sucesso!")
+        else:
+            print("Conta não encontrada. Tente novamente")
+
+    elif menuInicio == "3":
+        print("\nSAQUE\n")
+        contaAux=int(input("Conta para saque:"))
+        if contaAux in contas:
+            saque=float(input("Digite o valor a ser sacado da conta %s: "%contaAux))
+            n=indiceConta(contaAux)
+            if saldos[n] - saque < 0:
+                print("Saldo insuficiente")
+            else:
+                saldos[n]-=saque
+                print("Saque efetuado com sucesso!")
+        else:
+            print("Conta não encontrada. Tente novamente")
+      
+    elif menuInicio == "4":
+        print("\nCONSULTA DE SALDO\n")
+        contaAux=int(input("Conta a ser consultada:"))
+        if contaAux in contas:
+            s=indiceConta(contaAux)
+            print("Saldo da conta:R$ %.2f"%(saldos[s]))
+        else:
+            print("Conta não encontrada. Tente novamente")
+       
+    elif menuInicio == "5":
+        print("\nATUALIZAÇÃO DE CONTA\n")
+        atualizaContas(tiposConta)
+        print("Contas atualizadas com sucesso!")
+        
+    elif menuInicio == "6":
+        print("\nCONSULTA DE ATIVO BANCÁRIO\n")
+        totalGeral=0
+        for i in saldos:
+            totalGeral+=i
+        print("Total - Contas Poupança: R$%.2f"% (totalPoupanca (tiposConta)))
+        print("---------------------------------")
+        print("Total - Contas Corrente: R$%.2f"% (totalCorrente (tiposConta)))
+        print("---------------------------------")
+        print("Total - Contas Investimento: R$%.2f"%(totalInvestimento (tiposConta)))
+        print("---------------------------------")
+        print("Total - Geral: R$%.2f\n"%totalGeral)
+
+    elif menuInicio == "0":
+        print("""\nFIM DO PROGRAMA! VOLTE SEMPRE!
+                  Equipe F-CAZ
+              """)
+        break
+
+################### Created by Yasmim Coelho  ###################
